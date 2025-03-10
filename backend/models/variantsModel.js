@@ -21,8 +21,8 @@ const variantSchema = new mongoose.Schema({
   priceUSDT: {
     type: Number,
     required: true,
-  },
+  }, 
 });
 
-export default mongoose.model("Variants", variantSchema);
+export const variantsModel = mongoose.model("Variants", variantSchema);
 

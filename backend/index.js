@@ -1,21 +1,26 @@
 import express from "express"
 import cors from "cors"
-import { types, variants, codes } from './codeData/allCodes.js'
-import typesModel from "./models/typesModel.js";
-import variantsModel from "./models/variantsModel.js";
-import { connectDB } from './config.js';
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+import { connectDB } from './config.js';
+
+import { typesModel } from "./models/typesModel.js";
+import { variantsModel } from "./models/variantsModel.js";
+import authRoutes from "./routes/auth.route.js"
+
 dotenv.config();
 
-const corsOptions = {origin: "http://localhost:5173"}
+// const corsOptions = {origin: "http://localhost:5173"}
 const app = express();
-app.use(cors(corsOptions));
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+// app.use(cors(corsOptions));
 app.use(express.json());
+app.use(cookieParser())
 
+app.use("/api/auth", authRoutes)
 
 // response all types of redeem codes
 app.get("/", async (req,res) => {
-  // res.json(types)
   try {
     const Types = await typesModel.find()
     res.json(Types);
@@ -55,15 +60,14 @@ app.get("/variants", async (req, res) => {
     const id = req.query.id
     const type = await typesModel.findById(id);
     const allVariants = await variantsModel.find({ type_id: id });
-    const stock = codes.reduce((count, code) => 
-            code.variantID === current.id && code.status === 'available' ? count + 1 : count
-          , 0);
+    // const stock = codes.reduce((count, code) => 
+    //         code.variantID === current.id && code.status === 'available' ? count + 1 : count
+    //       , 0);
     res.json({type, allVariants});
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Error fetching allVariants' });
   }
-
 
   // const id = parseFloat(req.query.id);
 

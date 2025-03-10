@@ -4,7 +4,7 @@ function MyCodes() {
     <section className="w-[calc(100%-40px)] max-w-200 mx-auto flex flex-col gap-2 mb-5">
       <div className="flex flex-col gap-2 mb-3">
         <div className="flex gap-2 h-8">
-          <input className="bg-black/20 border border-[#ffffff2c] flex-1 rounded-[4px] text-blac px-3 outline-0 min-w-20"
+          <input className="bg-black/20 border border-[#ffffff2c] flex-1 rounded-[4px] text-black px-3 outline-0 min-w-20"
             type="text" name="" id="" placeholder="Search by Order ID"
           />
           <button className="w-[30%] bg-orange-500 rounded-[4px] font-semibold text-[0.8rem]">Search</button>

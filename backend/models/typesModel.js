@@ -19,4 +19,4 @@ const typeSchema = new mongoose.Schema({
   }
 });
 
-export default mongoose.model("Types", typeSchema);
+export const typesModel = mongoose.model("Types", typeSchema);
