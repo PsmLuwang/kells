@@ -16,10 +16,46 @@ import EmailVerification from "./pages/EmailVerification"
 import ForgotPassword from "./pages/ForgotPassword"
 import LoadingSpinner from "./components/LoadingSpinner";
 
-import { Toaster } from "react-hot-toast"
+import { Toaster, toast } from "react-hot-toast"
+// import toast from "react-hot-toast";
 import { useAuthStore } from "./store/authStore";
 import { useEffect } from "react";
 
+// Admin  routes
+const AdminRoute = ({ children }) => {
+  const { isAuthenticated, user } = useAuthStore();
+
+  if (!isAuthenticated) {
+    toast.success("Please login first");
+		return <Navigate to='/login' replace />;
+	}
+  if (!user.isVerified) {
+    toast.success("Please verify your email");
+		return <Navigate to='/verify-email' replace />;
+	}
+  if (user.role === 'user') {
+    toast.success("You are not Admin");
+		return <Navigate to='/' replace />;
+  }
+
+  return children;
+}
+// protect routes that require authentication
+const ProtectedRoute = ({ children }) => {
+	const { isAuthenticated, user } = useAuthStore();
+
+	if (!isAuthenticated) {
+    toast.success("Please login first");
+		return <Navigate to='/login' replace />;
+	}
+
+	if (!user.isVerified) {
+    toast.success("Please verify your email");
+		return <Navigate to='/verify-email' replace />;
+	}
+
+	return children;
+};
 
 // redirect authenticated users to the home page
 const RedirectAuthenticatedUser = ({ children }) => {
@@ -34,11 +70,11 @@ const RedirectAuthenticatedUser = ({ children }) => {
 function App() { 
   const { isCheckingAuth, checkAuth } = useAuthStore();
 
-	// useEffect(() => {
-	// 	checkAuth();
-	// }, [checkAuth]);
+	useEffect(() => {
+		checkAuth();
+	}, [checkAuth]);
 
-	// if (isCheckingAuth) return <LoadingSpinner />;
+	if (isCheckingAuth) return <LoadingSpinner />;
   return (
     <>
       <Routes>
@@ -58,7 +94,13 @@ function App() {
             </RedirectAuthenticatedUser>
           } 
         />
-        <Route path="/login" element={<Login/>} />
+        <Route path="/login" 
+          element={
+            <RedirectAuthenticatedUser>
+              <Login/>
+            </RedirectAuthenticatedUser>
+          } 
+        />
         <Route path='/verify-email' element={<EmailVerification />} />
         <Route path="/forgot-password" element={<ForgotPassword/>} />
 
@@ -72,35 +114,35 @@ function App() {
         />
         <Route path="/cart" 
           element={
-            <>
+            <ProtectedRoute>
               <Header />
               <Cart/>
-            </>
+            </ProtectedRoute>
           } 
         />
         <Route path="/order" 
           element={
-            <>
+            <ProtectedRoute>
               <Header />
               <Order/>
-            </>
+            </ProtectedRoute>
           } 
         />
         <Route path="/myCodes" 
           element={
-            <>
+            <ProtectedRoute>
               <Header />
               <MyCodes/>
-            </>
+            </ProtectedRoute>
           } 
         />
         {/* <Route path="/support" element={<Support/>} /> */}
         <Route path="/profile" 
           element={
-            <>
+            <ProtectedRoute>
               <Header />
               <Profile/>
-            </>
+            </ProtectedRoute>
           } 
         />
 
@@ -108,10 +150,18 @@ function App() {
 
         <Route path="/adminPanel/dashboard" 
           element={
-            <>
+            <AdminRoute>
               <Header />
               <AdminDashboard/>
-            </>
+            </AdminRoute>
+          } 
+        />
+        <Route path="/adminPanel/product" 
+          element={
+            <AdminRoute>
+              <Header />
+              <AdminProduct/>
+            </AdminRoute>
           } 
         />
         

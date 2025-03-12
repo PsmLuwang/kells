@@ -43,15 +43,9 @@ nav a,
   place-items: center;
   color: white;
   text-decoration: none;
-  font-size: 0.8rem;
+  /* font-size: 0.8rem; */
 }
-nav img,
-.sideBar img {
-  height: 40px;
-  width: 40px;
-  object-fit: cover;
-  border-radius: 50%;
-}
+
 .sideBarIcon {
   display: none;
   align-items: center;

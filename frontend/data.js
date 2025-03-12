@@ -141,7 +141,7 @@ const codeVariants = [
   }
 ]
 
-const redeemCodes = [
+const redeemCodes = [ 
   {
     "_id": ObjectId("65f8c1e4f1a2b3c4d5e6f7c1"),
     "code": "ABC123-XYZ456",
@@ -149,7 +149,6 @@ const redeemCodes = [
     "status": "available",
     "created_at": ISODate("2025-02-21T10:00:00Z"),
     "sold_at": null,
-    "redeemed_at": null
   },
   {
     "_id": ObjectId("65f8c1e4f1a2b3c4d5e6f7c2"),
@@ -158,6 +157,5 @@ const redeemCodes = [
     "status": "sold",
     "created_at": ISODate("2025-02-21T10:05:00Z"),
     "sold_at": ISODate("2025-02-21T10:30:00Z"),
-    "redeemed_at": null
   }
 ]

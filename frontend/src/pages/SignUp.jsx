@@ -35,8 +35,8 @@ const SignUp = () => {
 			className='max-w-md w-[calc(100%-30px)] m-auto bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-xl rounded-2xl shadow-xl 
 			overflow-hidden'
 		>
-			<div className='p-8'>
-        <h2 className='text-3xl font-bold mb-6 text-center bg-gradient-to-r from-amber-400 to-orange-500 text-transparent bg-clip-text'>
+			<div className='p-6'>
+        <h2 className='text-2xl font-bold mb-6 text-center bg-gradient-to-r from-amber-400 to-orange-500 text-transparent bg-clip-text'>
 					Create Account
 				</h2>
 

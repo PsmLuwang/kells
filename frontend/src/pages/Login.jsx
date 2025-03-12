@@ -17,7 +17,8 @@ const Login = () => {
 	};
 
 	return (
-		<div className="min-h-screen grid place-items-center">
+		<div className="min-h-screen grid pla
+		ce-items-center">
 			<motion.div
 				initial={{ opacity: 0, y: 20 }}
 				animate={{ opacity: 1, y: 0 }}
@@ -25,7 +26,7 @@ const Login = () => {
 				className='max-w-md w-[calc(100%-30px)] m-auto bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-xl rounded-2xl shadow-xl overflow-hidden'
 			>
 				<div className='p-8'>
-					<h2 className='text-3xl font-bold mb-6 text-center bg-gradient-to-r from-amber-400 to-orange-500 text-transparent bg-clip-text'>
+					<h2 className='text-2xl font-bold mb-6 text-center bg-gradient-to-r from-amber-400 to-orange-500 text-transparent bg-clip-text'>
 						Welcome Back
 					</h2>
 
