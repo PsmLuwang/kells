@@ -1,20 +1,22 @@
 import { Link } from 'react-router-dom'
-import { useState, useEffect } from 'react'
-import axios from 'axios'
-
+import { useEffect } from 'react'
+import { useCodeStore } from '../store/codeStore.js'
 
 
 function Home() {
 
-	const [types, setTypes] = useState([])
-  const fectchAPI = async (path) => {
-    const response = await axios.get(`http://localhost:8080${path}`);
-    setTypes(response.data)
-  }
-  useEffect(() => {
-    fectchAPI("/")
-  },[])
-
+	const {fetchTypes, types} = useCodeStore();
+	const handleFetchTypes = async () => {
+		try {
+			
+			await fetchTypes();
+		} catch (error) {
+			console.log(error);
+		}
+	}
+	useEffect(() => {
+		handleFetchTypes();
+	})
 
 	return (
 		<>

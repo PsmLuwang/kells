@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import PasswordStrengthMeter from "../components/PasswordStrengthMeter";
 import { useAuthStore } from "../store/authStore";
-
+ 
 const SignUp = () => {
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");

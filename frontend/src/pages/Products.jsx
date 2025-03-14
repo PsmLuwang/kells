@@ -1,72 +1,74 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
 import { Link, useParams } from 'react-router-dom';
+import { useCodeStore } from '../store/codeStore.js'
 
 
 function Products() {
-  // id is the Redeem code Type id
-  const { id } = useParams();
-  const [types, setTypes] = useState([]);
-  const [variants, setVariants] = useState([]);
 
-  // fetching code type and all its variants
-  const fectchVariants = async (path) => {
+  const { id } = useParams();
+  
+  const {fetchVariants, types, variants} = useCodeStore();
+  
+  const handleFetchVariants = async (id) => {
     try {
-      const response = await axios.get(`http://localhost:8080${path}`);
-      setTypes(response.data.type);
-      const formattedVariants = response.data.allVariants.map((item) => {
-        return {...item, qty: 0}
-      })
-      setVariants(formattedVariants);
+      await fetchVariants(id)
     } catch (error) {
-      console.log("Error fetching variants:", error);
+      console.log(error);
     }
   }
   useEffect(() => {
-    fectchVariants(`/variants/?id=${id}`)
-  },[id])
+    handleFetchVariants(id);
+    console.log(types);
+    
+  }, [id])
+
+
+  const [formatedVariants, setFormatedVariants] = useState(
+    variants.map((element) => {return {...element, qty: 0}})
+  );
+
   
   // update the quantities of listed codes 
   const selectingItems = (index, action) => {
-    action === "add" ? variants[index].qty ++ : 
-    action === "remove" && variants[index].qty > 0 ? variants[index].qty -- : 
-    variants[index].qty
+    action === "add" ? formatedVariants[index].qty ++ : 
+    action === "remove" && formatedVariants[index].qty > 0 ? formatedVariants[index].qty -- : 
+    formatedVariants[index].qty
     
-    setVariants([...variants])
+    setFormatedVariants([...formatedVariants])
   }
 
-  const addToCart = async (variant, qty) => {
-    try {
-      const cart = {
-        variant: variant,
-        qty: qty,
-      }
-      const response = await axios.post('http://localhost:8080/cart', cart);
-      console.log(response.data);
-      setVariants((prev) => 
-        prev.map((item) => (item.id === variant ? {...item, qty:0}: item))
-      );
-    } catch (error) {
-      console.error('Error posting data:', error);
-    }
-  };
+  // const addToCart = async (variant, qty) => {
+  //   try {
+  //     const cart = {
+  //       variant: variant,
+  //       qty: qty,
+  //     }
+  //     const response = await axios.post('http://localhost:8080/cart', cart);
+  //     console.log(response.data);
+  //     setVariants((prev) => 
+  //       prev.map((item) => (item.id === variant ? {...item, qty:0}: item))
+  //     );
+  //   } catch (error) {
+  //     console.error('Error posting data:', error);
+  //   }
+  // };
   
 
   return (
     <>
       {/* hero section */}
-      <div className='w-[calc(100%-40px)] mx-auto flex gap-[15px] border border-[#ffffff2c] rounded-[10px] bg-black/20'>
+      <div className='w-[calc(100%-40px)] mx-auto mt-4 flex gap-[15px] border border-[#ffffff2c] rounded-[10px] bg-black/20'>
         <img className='w-[100px] h-[130px] object-cover rounded-l-[9px]' 
-          src={types.img} alt="" 
+          src={types[0].img} alt="" 
         />
         <div>
           <h4 className='text-red-500 mt-[10px] font-bold'>
-            {types.name}
+            {types[0].name}
           </h4>
           <p>
-            {types.region} 
+            {types[0].region} 
             <img className='h-[20px] w-[20px] object-cover rounded-[50%]'
-              src={types.flag} alt="" 
+              src={types[0].flag} alt="" 
             />
           </p>
         </div>
@@ -76,9 +78,9 @@ function Products() {
       <h4 className='text-center text-red-500 font-bold my-5'>Add Products to Your Cart</h4>
       <section className='grid sm:grid-cols-2 grid-cols-1 gap-3 max-w-200 mx-auto px-5'>
         {
-          variants.map((variant, index) => (
+          formatedVariants.map((variant, index) => (
             <div key={index} className='bg-black/20 rounded-[10px] p-3'>
-              <h4 className='text-red-500 font-semibold'>{variant.coin} {types.name}</h4>
+              <h4 className='text-red-500 font-semibold'>{variant.coin} {types[0].name}</h4>
               <p>{variant.name} <span className='text-emerald-500'>({variant.stock} codes left)</span></p>
               <p>Rs {variant.priceINR}/- (${variant.priceUSDT})</p>
               <div className='flex justify-center gap-3 mt-3'>
@@ -115,5 +117,7 @@ function Products() {
     </>
   )
 }
+
+
 
 export default Products

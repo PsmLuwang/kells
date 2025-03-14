@@ -1,27 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import { useAuthStore } from "../store/authStore";
 import { useNavigate } from 'react-router-dom';
 const Profile = () => {
   const navigate = useNavigate()
-  // const [profile, setProfile] = useState([])
-  // const fectchProfile = async (id) => {
-  //   try {
-  //     const response = await axios.get(`http://localhost:8080/profile`);
-  //     setProfile(response.data)
-  //     console.log(response.data);
-  //   } catch (error) {
-  //     console.log("Error fetching profile:", error);
-  //   }
-  // }
   const { user, logout } = useAuthStore();
 
-  // get first letter of userName
-  
-  // logout()
-  // useEffect(() => {
-  //   fectchProfile("")
-  // },[])
   const handleLogout = async (e) => {
     e.preventDefault();
     try {
