@@ -7,6 +7,7 @@ const API_URL = "http://localhost:8080/api/code";
 
 axios.defaults.withCredentials = true;
 
+// NEED TO MANAGE STATES 
 export const useCodeStore = create((set) => ({
 	types: [],
 	variants: [],

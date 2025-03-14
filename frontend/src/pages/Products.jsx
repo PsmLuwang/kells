@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
 import { useCodeStore } from '../store/codeStore.js'
 
-
+// CORRECT DATA DOSNT GET
 function Products() {
 
   const { id } = useParams();

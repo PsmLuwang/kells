@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useCodeStore } from '../store/codeStore.js'
 
-
+// CORRECT DATA DOSNT GET WHEN NAVIGATE TO PRODUCT PAGE
 function Home() {
 
 	const {fetchTypes, types} = useCodeStore();
