@@ -27,7 +27,7 @@ export const variants = async (req, res) => {
         return {...variant, stock}
       })
     )
-   
+  
     res
       .status(200)
       .json({
