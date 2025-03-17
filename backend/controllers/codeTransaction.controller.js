@@ -42,6 +42,7 @@ export const addToCart = async (req, res) => {
   const {user_id, variant_id, qty} = req.body;
   try {
     const user_idExists = await cartModel.findOne({ user_id })
+    // add to cart for the first time 
     if (!user_idExists) {
       const newCart = new cartModel({
         user_id,
@@ -56,6 +57,7 @@ export const addToCart = async (req, res) => {
       })
     }
 
+    // update the cart 
     const variant_idExists = user_idExists.cart.find((item) => 
       item.variant_id.equals(variant_id)
     );
@@ -87,10 +89,12 @@ export const removeCart = async (req, res) => {
   const {user_id, variant_id} = req.query;
   try {
     const user_idExists = await cartModel.findOne({ user_id });
+    // undefined user
     if (!user_idExists) {
       return res.status(400).json({ success: false, message: "Your cart is empty", cart: []});
     }
 
+    // clear all 
     if (variant_id === "all") {
       await cartModel.deleteOne({ user_id });
       return res
@@ -101,8 +105,15 @@ export const removeCart = async (req, res) => {
     const updatedCart = user_idExists.cart.filter((item) => 
       item.variant_id.toString() !== variant_id
     );
+    // remove user from cart collection if the cart is empty
+    if (updatedCart.length === 0) {
+      await cartModel.deleteOne({ user_id });
+      return res
+        .status(200)
+        .json({ success: true, message: "Cart removed" , cart: [] });
+    }
+    // remove the selected item
     user_idExists.cart = updatedCart;
-
     await user_idExists.save();
 
     const formattedCart = user_idExists.cart.map((item) => {

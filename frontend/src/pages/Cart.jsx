@@ -5,7 +5,7 @@ import { useCodeTransactionStore } from "../store/codeTransactionStore.js";
 function Cart() {
 
 	const { user } = useAuthStore()
-	const { fetchCart, cart, message, removeCart } = useCodeTransactionStore();
+	const { fetchCart, cart, message, removeCart, success } = useCodeTransactionStore();
 
 	useEffect(() => {
 		const handleFetchCart = async () => {
@@ -17,17 +17,10 @@ function Cart() {
 		}	
 
 		handleFetchCart()
+		console.log(success);
+		
 	}, [])
 
-	
-	// const findTotal = {
-	// 	totalINR: parseFloat(cart.reduce((acc, current) => 
-	// 		acc + parseFloat(current.priceINR) * parseFloat(current.qty)
-	// 	,0).toFixed(2)),
-	// 	totalUSDT: parseFloat(cart.reduce((acc, current) => 
-	// 		acc + parseFloat(current.priceUSDT) * parseFloat(current.qty)
-	// 	,0).toFixed(2))
-	// }
 	
 	const findTotal = {
 		totalINR: cart.reduce((acc, current) => 

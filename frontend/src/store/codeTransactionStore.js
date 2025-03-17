@@ -11,6 +11,7 @@ export const useCodeTransactionStore = create((set) => ({
 	cart: [],
 	order: [],
  	message: null,
+	success: null,
 
 	// get all cart items
   fetchCart: async (user_id) => {
@@ -41,7 +42,7 @@ export const useCodeTransactionStore = create((set) => ({
 			const response = await axios.delete(`${API_URL}/cart`, {
 				params: { user_id, variant_id },
 			})
-			set({ cart: response.data.cart })
+			set({ cart: response.data.cart, success: response.data.success})
 		} catch (error) {
 			set({ error: error.response.data.message || "Cart can't remove."});
 			throw error;
