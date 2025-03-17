@@ -88,7 +88,13 @@ export const addToCart = async (req, res) => {
 export const removeCart = async (req, res) => {
   const {user_id, variant_id} = req.query;
   try {
-    const user_idExists = await cartModel.findOne({ user_id });
+    // const user_idExists = await cartModel.findOne({ user_id })
+    // .populate({ path: 'cart.variant_id', populate: { path: 'type_id' } })
+    // .exec();
+
+    const user_idExists = await cartModel.findOne({ user_id })
+    .populate({ path: 'cart.variant_id', populate: { path: 'type_id' } })
+    .exec();
     // undefined user
     if (!user_idExists) {
       return res.status(400).json({ success: false, message: "Your cart is empty", cart: []});
@@ -102,8 +108,9 @@ export const removeCart = async (req, res) => {
         .json({ success: true, message: "Cart removed" , cart: [] });
     }
 
+    // Remove specific item from the cart
     const updatedCart = user_idExists.cart.filter((item) => 
-      item.variant_id.toString() !== variant_id
+      item.variant_id._id.toString() !== variant_id
     );
     // remove user from cart collection if the cart is empty
     if (updatedCart.length === 0) {
@@ -133,6 +140,6 @@ export const removeCart = async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ success: false, message: "Error in removeCart", error });
+      .json({ success: false, message: "Error in removeCart", error: error.message });
   }
 }

@@ -5,7 +5,7 @@ import { useCodeTransactionStore } from "../store/codeTransactionStore.js";
 function Cart() {
 
 	const { user } = useAuthStore()
-	const { fetchCart, cart, message, removeCart, success } = useCodeTransactionStore();
+	const { fetchCart, cart, message, removeCart } = useCodeTransactionStore();
 
 	useEffect(() => {
 		const handleFetchCart = async () => {
@@ -17,8 +17,6 @@ function Cart() {
 		}	
 
 		handleFetchCart()
-		console.log(success);
-		
 	}, [])
 
 	
