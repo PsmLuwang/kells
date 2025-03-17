@@ -14,23 +14,29 @@ function Cart() {
 			} catch (error) {
 				console.log(error);
 			}
-		}
-		console.log("abc");
-		
+		}	
 
 		handleFetchCart()
 	}, [])
 
-	// const [cartProducts, setCartProducts] = useState([])
 	
 	// const findTotal = {
-	// 	totalINR: parseFloat(cartProducts.reduce((acc, current) => 
+	// 	totalINR: parseFloat(cart.reduce((acc, current) => 
 	// 		acc + parseFloat(current.priceINR) * parseFloat(current.qty)
 	// 	,0).toFixed(2)),
-	// 	totalUSDT: parseFloat(cartProducts.reduce((acc, current) => 
+	// 	totalUSDT: parseFloat(cart.reduce((acc, current) => 
 	// 		acc + parseFloat(current.priceUSDT) * parseFloat(current.qty)
 	// 	,0).toFixed(2))
 	// }
+	
+	const findTotal = {
+		totalINR: cart.reduce((acc, current) => 
+			acc + current.priceINR * current.qty
+		,0).toFixed(2),
+		totalUSDT: cart.reduce((acc, current) => 
+			acc + current.priceUSDT * current.qty
+		,0).toFixed(2)
+	}
 	
 	return (
 		<>
@@ -68,7 +74,7 @@ function Cart() {
 
 			<section className="flex justify-between bg-black/20 w-[calc(100%-40px)] max-w-200 mx-auto p-3 my-5 text-[0.85rem] font-bold rounded-[10px] border border-[#ffffff2c]">
 				<h4>Total Amount</h4>
-				<h4>Rs. {} <span className="text-white/50">(${})</span></h4>
+				<h4>Rs. {findTotal.totalINR} <span className="text-white/50">(${findTotal.totalUSDT})</span></h4>
 			</section>
 
 			<button className="bg-red-500 text-[0.9rem] font-medium w-[calc(100%-40px)] max-w-200 block mx-auto h-8 rounded-[6px] mb-5"

@@ -17,10 +17,10 @@ function Header() {
 
     setTotalQty(currentTotalQty)
   }, [user._id, cart])
+  ///////////////////////////////////////////////////////////////////////
 
   const sideBarRef = useRef(null);
   const sideBarIconRef = useRef(null);
-  ///////////////////////////////////////////////////////////////////////
   useEffect(() => {
     const handleClick = (event) => {
       if (!sideBarRef.current.contains(event.target) && !sideBarIconRef.current.contains(event.target)) {
