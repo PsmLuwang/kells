@@ -15,9 +15,11 @@ function Cart() {
 				console.log(error);
 			}
 		}
+		console.log("abc");
+		
 
 		handleFetchCart()
-	}, [fetchCart, cart])
+	}, [])
 
 	// const [cartProducts, setCartProducts] = useState([])
 	

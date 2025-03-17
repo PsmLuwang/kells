@@ -1,13 +1,26 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
+import { useCodeTransactionStore } from "../store/codeTransactionStore.js";
 
 function Header() {
   const { user, isAuthenticated } = useAuthStore();
+  const { fetchCart, cart } = useCodeTransactionStore();
+
+  /////////////////////////////////////////////////////////////////
+  const [totalQty, setTotalQty] = useState()
+  useEffect(() => {
+    fetchCart(user._id)
+    const currentTotalQty = cart.reduce((acc, cur) => {
+      return acc += cur.qty
+    }, 0)
+
+    setTotalQty(currentTotalQty)
+  }, [user._id, cart])
 
   const sideBarRef = useRef(null);
   const sideBarIconRef = useRef(null);
-
+  ///////////////////////////////////////////////////////////////////////
   useEffect(() => {
     const handleClick = (event) => {
       if (!sideBarRef.current.contains(event.target) && !sideBarIconRef.current.contains(event.target)) {
@@ -44,7 +57,7 @@ function Header() {
             to={"/cart"} >
             Cart 
             <span className='absolute top-[-10px] right-[-12px] bg-red-600 text-[0.7rem] w-4 h-4 grid place-items-center p-0 rounded-2xl'>
-              8
+            {totalQty}
             </span>
           </Link>
           <Link to={"/order"} >Order</Link>
@@ -71,7 +84,7 @@ function Header() {
             to={"/cart"}>
             <i className="fa-solid fa-cart-shopping"></i>
             <span className='absolute top-[-6px] right-[-8px] bg-red-600 text-[0.7rem] w-4 h-4 grid place-items-center p-0 rounded-2xl'>
-              8
+              {totalQty}
             </span>
           </Link>
           <i onClick={handleToggleSideBar} className="fa-solid fa-bars"></i>
