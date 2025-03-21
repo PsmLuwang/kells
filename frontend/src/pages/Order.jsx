@@ -1,6 +1,35 @@
-import React from 'react'
+import { Link, useParams, Navigate } from "react-router-dom";
+import { useOrderStore } from "../store/orderStore";
+import { useAuthStore } from "../store/authStore.js";
+import LoadingSpinner from "../components/LoadingSpinner.jsx";
+import { useEffect, useState } from "react";
 
 const Order = () => {
+
+  const { user } = useAuthStore();
+  const { orders, viewOrders } = useOrderStore();
+
+  useEffect(() => {
+    const handleViewOrders = async () => {
+      try {
+        await viewOrders(user._id);
+        
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    
+    handleViewOrders();
+  }, [user._id, viewOrders]);
+
+
+
+    const [allOrders, setAllOrders] = useState([]);
+  
+    useEffect(() => {
+      setAllOrders(orders);
+      
+    }, [orders]);
 
   const data = [
     {
@@ -89,11 +118,11 @@ const Order = () => {
       </div>
 
       {/* render the orders */}
-      {data.map((order, index) => (
+      {allOrders.map((order, index) => (
         <div key={index} className="bg-black/20 rounded-[8px] border border-[#ffffff2c] flex flex-col gap-y-2 text-[0.8rem]">
           {/* order id and status */}
           <div className='flex justify-between py-2 px-3 bg-amber-500 font-semibold text-black rounded-t-[8px]'>
-            <p>{order.orderID}</p>
+            <p>{order._id}</p>
             <p>{order.status}</p>
           </div>
           {/* each items in the order details */}
@@ -113,12 +142,12 @@ const Order = () => {
           {/* total and order details at the bottom */}
           <div className='flex justify-between border-t border-[#ffffff2c] rounded-b-[8px]'>
             <div className='py-1.5 px-3 text-[0.7rem]'>
-              <p>Payment: {order.payment}</p>
-              <p>Order Date: {order.date}</p>
+              <p>Payment: needToUpdate</p>
+              <p>Order Date: {order.createdAt}</p>
             </div>
             <div className='bg-[#ffffff2c] flex flex-col justify-center items-center text-left min-w-[20%] rounded-br-[8px] px-3 font-semibold text-[0.7rem]'>
-              <p>Rs.{findTotal(index).totalINR}/-</p>
-              <p>(${findTotal(index).totalUSDT})</p>
+              <p>Rs.{order.totalINR}/-</p>
+              <p>(${order.totalUSDT})</p>
             </div>
           </div>
         </div>

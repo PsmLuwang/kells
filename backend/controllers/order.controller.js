@@ -5,8 +5,24 @@ import { orderModel } from "../models/orderModel.js";
 export const fetchOrder = async (req, res) => {
   const user_id = req.query.user_id;
   try {
-    const orderCollection = await orderModel.find({ user_id }).lean()
-    const orders = orderCollection.map(({ user_id, ...rest }) => rest);
+    const orderCollection = await orderModel.find({ user_id })
+    .populate({
+      path: 'items.variant_id', populate: { path: 'type_id' }
+    }).lean()
+    const orders = orderCollection.map(({ user_id, ...rest }) => {
+      return {
+        ...rest,
+        items: rest.items.map(item => {
+          return {
+            ...item,
+            name: item.variant_id.type_id.name,
+            value: item.variant_id.name,
+            variant_id: undefined,
+            type_id: undefined
+          };
+        })
+      }
+    });
 
     res.status(200).json({ success: true, orders });
   } catch (error) {
