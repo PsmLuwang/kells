@@ -9,6 +9,7 @@ import { variantsModel } from "./models/variantsModel.js";
 import authRoutes from "./routes/auth.route.js";
 import redeemCodeRoutes from "./routes/redeemCode.route.js"
 import cartTransactionRoutes from "./routes/codeTransaction.route.js"
+import orderRoutes from "./routes/order.route.js"
 
 dotenv.config();
 
@@ -24,8 +25,10 @@ app.use(cookieParser())
 app.use("/api/auth", authRoutes);
 // redeem codes operation
 app.use("/api/code", redeemCodeRoutes);
-// codeTransaction (cart and order)
+// codeTransaction (cart)
 app.use("/api/codeTransaction", cartTransactionRoutes)
+// order and view my codes
+app.use("/api/record", orderRoutes)
 
 
 

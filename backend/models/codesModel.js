@@ -9,12 +9,17 @@ const codeSchema = new mongoose.Schema({
   redeemCode: {
     type: String,
     required: true,
+    unique: true
   },
   status: {
     type: String,
-    enum: ["available", "sold"],
+    enum: ["available", "hold", "sold"],
     default: "available",
     required: true,
+  },
+  buyer: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Users"
   },
   createdAt: {
     type: Date,

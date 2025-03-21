@@ -43,6 +43,8 @@ export const useCodeTransactionStore = create((set) => ({
 			})
 			set({ cart: response.data.cart })
 		} catch (error) {
+			console.log("abc");
+			
 			set({ error: error.response.data.message || "Cart can't remove."});
 			throw error;
 		}

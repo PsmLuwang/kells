@@ -97,7 +97,7 @@ export const removeCart = async (req, res) => {
     .exec();
     // undefined user
     if (!user_idExists) {
-      return res.status(400).json({ success: false, message: "Your cart is empty", cart: []});
+      return res.status(200).json({ success: true, message: "Your cart is empty", cart: []});
     }
 
     // clear all 
