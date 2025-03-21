@@ -5,7 +5,7 @@ import { useCodeStore } from "../store/codeStore.js";
 import { useCodeTransactionStore } from "../store/codeTransactionStore.js";
 import LoadingSpinner from "../components/LoadingSpinner.jsx";
 
-function Products() {
+function Products() { 
   const { id } = useParams();
   const { user } = useAuthStore();
   const { fetchVariants, types, variants } = useCodeStore();

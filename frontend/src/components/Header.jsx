@@ -8,15 +8,18 @@ function Header() {
   const { fetchCart, cart } = useCodeTransactionStore();
 
   /////////////////////////////////////////////////////////////////
-  const [totalQty, setTotalQty] = useState()
+  const [totalQty, setTotalQty] = useState(0)
   useEffect(() => {
-    fetchCart(user._id)
-    const currentTotalQty = cart.reduce((acc, cur) => {
-      return acc += cur.qty
-    }, 0)
+    if (isAuthenticated) {
+      
+      fetchCart(user._id)
+      const currentTotalQty = cart.reduce((acc, cur) => {
+        return acc += cur.qty
+      }, 0)
+      setTotalQty(currentTotalQty)
+    }
 
-    setTotalQty(currentTotalQty)
-  }, [user._id, cart])
+  }, [cart, isAuthenticated])
   ///////////////////////////////////////////////////////////////////////
 
   const sideBarRef = useRef(null);
@@ -56,9 +59,11 @@ function Header() {
           <Link className='relative'
             to={"/cart"} >
             Cart 
-            <span className='absolute top-[-10px] right-[-12px] bg-red-600 text-[0.7rem] w-4 h-4 grid place-items-center p-0 rounded-2xl'>
-            {totalQty}
-            </span>
+            {isAuthenticated && totalQty > 0 && (
+              <span className='absolute top-[-10px] right-[-12px] bg-red-600 text-[0.7rem] w-4 h-4 grid place-items-center p-0 rounded-2xl'>
+                {totalQty}
+              </span>
+            )}
           </Link>
           <Link to={"/order"} >Order</Link>
           <Link to={"/myCodes"} >My Codes</Link>
@@ -83,9 +88,12 @@ function Header() {
           <Link className='relative'
             to={"/cart"}>
             <i className="fa-solid fa-cart-shopping"></i>
-            <span className='absolute top-[-6px] right-[-8px] bg-red-600 text-[0.7rem] w-4 h-4 grid place-items-center p-0 rounded-2xl'>
-              {totalQty}
-            </span>
+            {isAuthenticated && totalQty > 0 && (
+              <span className='absolute top-[-6px] right-[-8px] bg-red-600 text-[0.7rem] w-4 h-4 grid place-items-center p-0 rounded-2xl'>
+                {totalQty}
+              </span>
+            )}
+            
           </Link>
           <i onClick={handleToggleSideBar} className="fa-solid fa-bars"></i>
         </div>

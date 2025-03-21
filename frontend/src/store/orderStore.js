@@ -29,7 +29,7 @@ export const useOrderStore = create((set) => ({
 	
 				return {...order, createdAt: formattedDate}
 				
-			});
+			}).reverse();
 
 			function padZero(num) {
 				return num.toString().padStart(2, '0');
