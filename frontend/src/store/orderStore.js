@@ -15,7 +15,26 @@ export const useOrderStore = create((set) => ({
 	viewOrders: async (user_id) => {
 		try {
 			const response = await axios.get(`${API_URL}/order?user_id=${user_id}`);
-			set({ orders: response.data.orders});
+
+			const data = response.data.orders;
+
+			const orders = data.map(order => {
+				const date = new Date(order.createdAt);
+	
+				const formattedDate = `
+					${date.getFullYear()}-${padZero(date.getMonth() + 1)}-${padZero(date.getDate())} 
+					(${padZero(date.getHours() % 12 || 12)}:${padZero(date.getMinutes())} 
+					${date.getHours() < 12 ? 'AM' : 'PM'})
+				`;
+	
+				return {...order, createdAt: formattedDate}
+				
+			});
+
+			function padZero(num) {
+				return num.toString().padStart(2, '0');
+			}
+			set({ orders });
 		} catch (error) {
 			set({ error: error.response.data.message || "Error viewOrders"});
 			throw error;

@@ -1,4 +1,3 @@
-import { Link, useParams, Navigate } from "react-router-dom";
 import { useOrderStore } from "../store/orderStore";
 import { useAuthStore } from "../store/authStore.js";
 import LoadingSpinner from "../components/LoadingSpinner.jsx";
@@ -31,75 +30,12 @@ const Order = () => {
       
     }, [orders]);
 
-  const data = [
-    {
-      orderID: '78342685',
-      status: 'Success',
-      date: '12th-Jan-2025',
-      payment: 'UPI',
-      items: [
-        {
-          name: "Smile One Coin",
-          value: "100 BRL",
-          qty: "5",
-          priceINR: "1550",
-          priceUSDT: "17.05"
-        },
-        {
-          name: "Smile One Coin",
-          value: "500 BRL",
-          qty: "2",
-          priceINR: "7550",
-          priceUSDT: "85.35"
-        },
-      ]
-    },
-    {
-      orderID: '78342687',
-      status: 'Success',
-      date: '13th-Jan-2025',
-      payment: 'Binance',
-      items: [
-        {
-          name: "Smile One Coin",
-          value: "100 BRL",
-          qty: "3",
-          priceINR: "1550",
-          priceUSDT: "17.05"
-        },
-        {
-          name: "Smile One Coin",
-          value: "500 BRL",
-          qty: "1",
-          priceINR: "7550",
-          priceUSDT: "85.35"
-        },
-        {
-          name: "MooGold",
-          value: "1500 INR",
-          qty: "2",
-          priceINR: "1490",
-          priceUSDT: "16.07"
-        },
-      ]
-    }
-  ]
-
-  // find the total amount for each order
-  const findTotal = (index) => {
-    let totalINR = data[index].items.reduce((start, current) => {
-      return start + parseFloat(current.priceINR) * parseFloat(current.qty)
-    }, 0);
-    let totalUSDT = data[index].items.reduce((start, current) => {
-      return start + parseFloat(current.priceUSDT) * parseFloat(current.qty)
-    }, 0);
-    return {totalINR, totalUSDT}
-  }
+    
 
   return (
     <section className="w-[calc(100%-40px)] max-w-200 mx-auto mt-4 flex flex-col gap-2 mb-5">
       {/* filter section */}
-      <div className="flex flex-col gap-2 mb-3">
+      {/* <div className="flex flex-col gap-2 mb-3">
         <div className="flex gap-2 h-8">
           <input className="bg-black/20 border border-[#ffffff2c] flex-1 rounded-[4px] text-blac px-3 outline-0 min-w-20"
             type="text" name="" id="" placeholder="Search by Order ID"
@@ -115,7 +51,7 @@ const Order = () => {
             type="date" name="" id="" 
           />
         </div>
-      </div>
+      </div> */}
 
       {/* render the orders */}
       {allOrders.map((order, index) => (
