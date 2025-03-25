@@ -33,7 +33,7 @@ const Order = () => {
     
 
   return (
-    <section className="w-[calc(100%-40px)] max-w-200 mx-auto mt-4 flex flex-col gap-2 mb-5">
+    <section className="w-[calc(100%-30px)] max-w-200 mx-auto mt-4 flex flex-col gap-2 mb-5">
       {/* filter section */}
       {/* <div className="flex flex-col gap-2 mb-3">
         <div className="flex gap-2 h-8">
@@ -52,6 +52,15 @@ const Order = () => {
           />
         </div>
       </div> */}
+
+      {
+        allOrders.length === 0 && (
+          <div className="bg-black/20 mt-30 w-60 m-auto text-center py-5 rounded-[8px]">
+            No order history
+          </div>
+        )
+      }
+      
 
       {/* render the orders */}
       {allOrders.map((order, index) => (
@@ -78,7 +87,7 @@ const Order = () => {
           {/* total and order details at the bottom */}
           <div className='flex justify-between border-t border-[#ffffff2c] rounded-b-[8px]'>
             <div className='py-1.5 px-3 text-[0.7rem]'>
-              <p>Payment: needToUpdate</p>
+              <p>Payment: {order.paymentMethod}</p>
               <p>Order Date: {order.createdAt}</p>
             </div>
             <div className='bg-[#ffffff2c] flex flex-col justify-center items-center text-left min-w-[20%] rounded-br-[8px] px-3 font-semibold text-[0.7rem]'>

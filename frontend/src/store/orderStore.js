@@ -10,6 +10,7 @@ axios.defaults.withCredentials = true;
 export const useOrderStore = create((set) => ({
 	orders: [],
 	myCodes: [],
+	error: null,
 
 	// get all orders 
 	viewOrders: async (user_id) => {
@@ -40,5 +41,13 @@ export const useOrderStore = create((set) => ({
 			throw error;
 		}
 	},
+
+	checkout: async (user_id) => {
+		try {
+			await axios.post(`${API_URL}/order?user_id=${user_id}`);
+		} catch (error) {
+			
+		}
+	}
 
 }));

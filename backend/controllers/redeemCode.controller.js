@@ -18,26 +18,62 @@ export const types = async (req, res) => {
 export const variants = async (req, res) => {
   try {
     const id = req.query.id
-    const type = await typesModel.findById(id);
-    const allVariants = await variantsModel.find({ type_id: id }).lean();
+    if (id === "admin") {
+      const type = await typesModel.find();
+      const allVariants = await variantsModel.find().lean();
+      const allFormattedVariants = await Promise.all(
+        allVariants.map(async(variant) => {
+          const stock = await codesModel.countDocuments({status: "available", variant_id: variant._id});
+          return {...variant, stock}
+        })
+      ) 
+      
 
-    const allFormattedVariants = await Promise.all(
-      allVariants.map(async(variant) => {
-        const stock = await codesModel.countDocuments({status: "available", variant_id: variant._id});
-        return {...variant, stock}
-      })
-    )
+      return res
+        .status(200)
+        .json({
+          success: true,
+          type: type,
+          variants: allFormattedVariants
+        });
+    } else {
+      const type = await typesModel.findById(id);
+      const allVariants = await variantsModel.find({ type_id: id }).lean();
+      const allFormattedVariants = await Promise.all(
+        allVariants.map(async(variant) => {
+          const stock = await codesModel.countDocuments({status: "available", variant_id: variant._id});
+          return {...variant, stock}
+        })
+      ) 
+
+
+      res
+        .status(200)
+        .json({
+          success: true,
+          type: [type],
+          variants: allFormattedVariants
+        });
+    }
+
   
-    res
-      .status(200)
-      .json({
-        success: true,
-        type: [type],
-        variants: allFormattedVariants
-      });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Error fetching allVariants' });
+  }
+}
+
+// update price of each variants (admin)
+export const priceUpdate = async (req, res) => {
+  const {variant_id, priceINR, priceUSDT} = req.body;
+  try {
+    const matchVariant = await variantsModel.findById(variant_id);
+    matchVariant.priceINR = priceINR;
+    matchVariant.priceUSDT = priceUSDT;
+    await matchVariant.save()
+    res.status(200).json({ success: true, variant: matchVariant })
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Error in updating price.' });
   }
 }
 

@@ -34,10 +34,10 @@ function payment() {
   return true
 }
 export const newOrder = async (req, res) => {
-  const { user_id, cart_id } = req.body;
+  const { user_id } = req.query;
 
   try {
-    const cartDetails = await cartModel.findOne({ _id : cart_id})
+    const cartDetails = await cartModel.findOne({ user_id })
     .populate({ path: 'cart.variant_id', populate: { path: 'type_id' } })
     .exec();
 
@@ -102,7 +102,6 @@ export const newOrder = async (req, res) => {
             priceUSDT: item.variant_id.priceUSDT,
             codes: codeCollection
           })
-          
         }
 
         const { totalINR, totalUSDT } = cartDetails.cart.reduce((acc, current) => {
@@ -111,33 +110,104 @@ export const newOrder = async (req, res) => {
           return acc;
         }, { totalINR: 0, totalUSDT: 0 });
 
+        
         // pass the necessary data to the payment function (eg. totals)
         const paymentStatus = await payment()
+        const paymentMethod = "UPI"
+        
+        const formattedOrder = {
+          user_id,
+          items,
+          paymentMethod,
+          totalINR: totalINR.toFixed(2),
+          totalUSDT: totalUSDT.toFixed(2),
+        }
+
+        const holdCodes = await codesModel.find({
+          status: "hold",
+          buyer: user_id
+        })
 
         if (!paymentStatus) {
-          return res.json({success: false, message: "payment failed"})
 
-
-        }
-        if (paymentStatus) {
-          const formattedOrder = new orderModel({
-            user_id,
-            status: "Success",
-            items,
-            totalINR,
-            totalUSDT,
-          })
+          const updatedCodes = holdCodes.map(code => {
+            code.status = "available";
+            code.buyer = undefined;
+            return code;
+          });
           
-          await formattedOrder.save()
-          return res.json({ success: true, message: formattedOrder});
+          await codesModel.bulkWrite(updatedCodes.map(code => ({
+            updateOne: {
+              filter: { _id: code._id },
+              update: { $set: code }
+            }
+          })));
+
+          const removedCodes = formattedOrder.items.map((varient) => {
+            return {
+              ...varient,
+              codes: undefined
+            }
+          })
+          const withStatus = new orderModel({...formattedOrder, items: removedCodes, status: "Failed"})
+          
+          await withStatus.save()
+          
+          return res.json({success: false, message: "payment failed"})
+        }
+
+        if (paymentStatus) {
+          const withStatus = new orderModel({...formattedOrder, status: "Success"})
+          await withStatus.save()
+
+          const updatedCodes = holdCodes.map(code => {
+            code.status = "sold";
+            return code;
+          });
+          
+          await codesModel.bulkWrite(updatedCodes.map(code => ({
+            updateOne: {
+              filter: { _id: code._id },
+              update: { $set: code }
+            }
+          })));
+
+
+          await cartModel.deleteOne({ user_id });
+
+          return res.json({ success: true, message: withStatus});
         }
       }
-      
-      // res.json({ success: true, message: "first"});
     }
     res.json({ success: true, message: cartDetails });
 
   } catch (error) {
     res.status(500).json({ success: false, message: "error in new order", error: error.message})
+  }
+}
+
+
+
+
+export const unholdDev = async (req, res) => {
+  try {
+    const allHoldCodes = await codesModel.find();
+
+    const updatedCodes = allHoldCodes.map(code => {
+      code.status = "available";
+      code.buyer = undefined;
+      return code;
+    });
+    
+    await codesModel.bulkWrite(updatedCodes.map(code => ({
+      updateOne: {
+        filter: { _id: code._id },
+        update: { $set: code }
+      }
+    })));
+
+    res.json({ status: true, message: "updated"})
+  } catch (error) {
+    res.json({ status: false, message: "error in unholdDev", error})
   }
 }

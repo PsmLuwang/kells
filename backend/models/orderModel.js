@@ -33,6 +33,7 @@ const orderSchema = new mongoose.Schema({
       codes: [],
     }
   ],
+  paymentMethod: String,
   totalINR: Number,
   totalUSDT: Number,
   createdAt: {

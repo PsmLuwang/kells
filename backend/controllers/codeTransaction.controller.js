@@ -88,9 +88,6 @@ export const addToCart = async (req, res) => {
 export const removeCart = async (req, res) => {
   const {user_id, variant_id} = req.query;
   try {
-    // const user_idExists = await cartModel.findOne({ user_id })
-    // .populate({ path: 'cart.variant_id', populate: { path: 'type_id' } })
-    // .exec();
 
     const user_idExists = await cartModel.findOne({ user_id })
     .populate({ path: 'cart.variant_id', populate: { path: 'type_id' } })

@@ -9,7 +9,7 @@ axios.defaults.withCredentials = true;
 
 export const useCodeStore = create((set) => ({
 	types: [],
-	variants: [],
+	variants: [], 
 	codes: [],
 
 	// get all types 
