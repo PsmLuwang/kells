@@ -6,7 +6,7 @@ import { useCodeTransactionStore } from "../store/codeTransactionStore.js";
 function Cart() {
 
 	const { user } = useAuthStore()
-	const { fetchCart, cart, message, removeCart } = useCodeTransactionStore();
+	const { fetchCart, cart, removeCart } = useCodeTransactionStore();
 	const { checkout } = useOrderStore();
 
 	useEffect(() => {

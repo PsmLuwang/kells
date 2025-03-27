@@ -13,6 +13,16 @@ const AdminProduct = () => {
   const id = "admin";
   const { fetchVariants, types, variants } = useCodeStore();
 
+  const [showPopup, setShowPopup] = useState(false);
+  const [variant_id, setVariant_id] = useState(null);
+  const [name, setName] = useState(null);
+
+  const handleUpdatePrice = (variant_id, name) => {
+    setVariant_id(variant_id);
+    setName(name)
+    setShowPopup(true);
+  };
+
   
   useEffect(() => {
     const handleFetchVariants = async () => {
@@ -40,11 +50,13 @@ const AdminProduct = () => {
   }
   
 
+  
+
 
   return (
-    <div className="px-5 relative">
+    <div className="px-[15px] relative">
       <AdminSideBar />
-      <AdminPriceUpdate/>
+      
       <section className='ml-60 p-4 pr-0 max-sm:ml-0 max-sm:p-0 max-sm:mt-4 transition-[0.5s]'>
         <h1 className='font-semibold'>Product</h1>
 
@@ -81,9 +93,10 @@ const AdminProduct = () => {
                       <span className='text-amber-600'>)</span>
                     </td>
                     <td className='text-amber-600'>
-                      <Link>
+                      <Link onClick={() => handleUpdatePrice(variant._id, variant.name)}>
                         <i className="fa-regular fa-pen-to-square"></i>
                       </Link>
+                      
                     </td>
                   </tr>
 
@@ -95,6 +108,9 @@ const AdminProduct = () => {
         ))}
 
       </section>
+      {showPopup && (
+        <AdminPriceUpdate onClose={() => setShowPopup(false)} variant_id={variant_id} name={name}/>
+      )}
     </div>
   )
 }

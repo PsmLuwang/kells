@@ -71,7 +71,7 @@ export const priceUpdate = async (req, res) => {
     matchVariant.priceINR = priceINR;
     matchVariant.priceUSDT = priceUSDT;
     await matchVariant.save()
-    res.status(200).json({ success: true, variant: matchVariant })
+    res.status(200).json({ success: true, message: "Price updated", variant: matchVariant })
   } catch (error) {
     res.status(500).json({ success: false, message: 'Error in updating price.' });
   }

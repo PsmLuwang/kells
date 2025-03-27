@@ -5,6 +5,15 @@ body {
   color: rgba(255, 255, 255, 0.886);
   background: linear-gradient(to right, #1c3363, #432063);
 }
+@layer base {
+  input[type="number"] {
+    @apply appearance-none;
+  }
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    @apply appearance-none;
+  }
+}
 
 /* start of header */
 header {
