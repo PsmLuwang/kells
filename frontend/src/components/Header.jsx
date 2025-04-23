@@ -12,7 +12,7 @@ function Header() {
   useEffect(() => {
     if (isAuthenticated) {
       
-      fetchCart(user._id)
+      fetchCart(user._id) 
       const currentTotalQty = cart.reduce((acc, cur) => {
         return acc += cur.qty
       }, 0)
@@ -42,8 +42,23 @@ function Header() {
     sideBarRef.current.classList.toggle('openSideBar');
   };
 
+// let pass; // length 8
+// if (pass == "a") {
+//   console.log("welcome");
+  
+// }
+
+// for (let i = 0; i <= 100; i++) {
+//   console.log("Salam Priyansu Meitei", i);
+  
+  
+// }
+
+
+
+
   return (
-    <>
+    <section className='sticky top-0 z-2'>
       <header>
         <div className="logo">
           <Link to={"/"}>
@@ -121,7 +136,7 @@ function Header() {
         <Link to={"#"} >Support</Link>
         {isAuthenticated && user.role === "admin" && (<Link to={"/adminPanel/dashboard"}>Admin Panel</Link>)}
       </div>
-    </>
+    </section>
   );
 }
 

@@ -20,6 +20,8 @@ import { Toaster, toast } from "react-hot-toast"
 // import toast from "react-hot-toast";
 import { useAuthStore } from "./store/authStore";
 import { useEffect } from "react";
+import AdminViewCodes from "./pages/adminPages/AdminViewCodes"
+import AdminUsers from "./pages/adminPages/AdminUsers"
 
 // Admin  routes
 const AdminRoute = ({ children }) => {
@@ -161,6 +163,22 @@ function App() {
             <AdminRoute>
               <Header />
               <AdminProduct/>
+            </AdminRoute>
+          } 
+        />
+        <Route path="/adminPanel/viewCode" 
+          element={
+            <AdminRoute>
+              <Header />
+              <AdminViewCodes/>
+            </AdminRoute>
+          } 
+        />
+        <Route path="/adminPanel/users" 
+          element={
+            <AdminRoute>
+              <Header />
+              <AdminUsers/>
             </AdminRoute>
           } 
         />

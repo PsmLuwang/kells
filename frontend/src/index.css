@@ -19,7 +19,7 @@ body {
 header {
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 2; 
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -73,7 +73,7 @@ nav a,
   background-color: rgba(0, 0, 0, 0.514);
   border: 1px solid rgba(255, 255, 255, 0.104);
   backdrop-filter: blur(20px);
-  z-index: 1;
+  z-index: 2;
   overflow: hidden;
   transition: 0.4s ease-in-out;
   height: 0;

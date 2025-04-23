@@ -24,7 +24,9 @@ export const variants = async (req, res) => {
       const allFormattedVariants = await Promise.all(
         allVariants.map(async(variant) => {
           const stock = await codesModel.countDocuments({status: "available", variant_id: variant._id});
-          return {...variant, stock}
+          const hold = await codesModel.countDocuments({status: "hold", variant_id: variant._id});
+          const sold = await codesModel.countDocuments({status: "sold", variant_id: variant._id});
+          return {...variant, stock, hold, sold}
         })
       ) 
       
