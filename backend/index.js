@@ -10,6 +10,7 @@ import authRoutes from "./routes/auth.route.js";
 import redeemCodeRoutes from "./routes/redeemCode.route.js"
 import cartTransactionRoutes from "./routes/codeTransaction.route.js"
 import orderRoutes from "./routes/order.route.js"
+import adminRoutes from "./routes/admin.route.js"
 
 dotenv.config();
 
@@ -29,7 +30,8 @@ app.use("/api/code", redeemCodeRoutes);
 app.use("/api/codeTransaction", cartTransactionRoutes)
 // order and view my codes
 app.use("/api/record", orderRoutes)
-
+// admin features
+app.use("/api/admin", adminRoutes)
 
 
 
