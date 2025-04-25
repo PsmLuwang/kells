@@ -1,9 +1,26 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 import AdminSideBarIcon from '../../components/AdminSideBarIcon'
 import AdminSideBar from '../../components/AdminSideBar'
 
 
 const AdminUsers = () => {
+
+  const [allUsers, setAllUsers] = useState([]);
+  useEffect(() => {
+    const API_URL = "http://localhost:8080/api/admin";
+    const getAllusers = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/viewUsers`);
+        setAllUsers(response.data.users)
+      } catch (error) {
+        
+      }
+    }
+
+    getAllusers();
+    
+  }, [])
   return (
     <>
       <AdminSideBarIcon />
@@ -22,28 +39,19 @@ const AdminUsers = () => {
             </div>
 
             {/* render this to display user details */}
-            <div className='grid grid-cols-[3fr_1fr_1fr] bg-black/20 p-2 rounded-[6px]'>
-              <div>
-                <p>Salam Priyansu Meitei</p>
-                <p className='text-[0.8rem] font-extralight text-white/70'>spriyansumeitei@gmail.com</p>
+            {allUsers.map((user, index) => (
+              <div key={index} className='grid grid-cols-[3fr_1fr_1fr] bg-black/20 p-2 rounded-[6px]'>
+                <div>
+                  <p>{user.name}</p>
+                  <p className='text-[0.8rem] font-extralight text-white/70'>{user.email}</p>
+                </div>
+                <p className='text-center'>{user.totalOrders}</p>
+                <div>
+                  <p>Rs {user.totalSpentINR}</p>
+                  <p className='text-[0.8rem] font-light text-white/70'>(${user.totalSpentUSDT})</p>
+                </div>
               </div>
-              <p className='text-center'>13</p>
-              <div>
-                <p>Rs 13000</p>
-                <p className='text-[0.8rem] font-light text-white/70'>($140)</p>
-              </div>
-            </div>
-            <div className='grid grid-cols-[3fr_1fr_1fr] bg-black/20 p-2 rounded-[6px]'>
-              <div>
-                <p>Salam Priyansu Meitei</p>
-                <p className='text-[0.8rem] font-extralight text-white/70'>spriyansumeitei@gmail.com</p>
-              </div>
-              <p className='text-center'>13</p>
-              <div>
-                <p>Rs 13000</p>
-                <p className='text-[0.8rem] font-light text-white/70'>($140)</p>
-              </div>
-            </div>
+            ))}
           </section>
 
          

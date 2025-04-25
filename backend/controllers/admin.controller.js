@@ -1,6 +1,9 @@
 import { codesModel } from "../models/codesModel.js"
 import { typesModel } from "../models/typesModel.js";
 import { variantsModel } from "../models/variantsModel.js";
+import { usersModel } from "../models/usersModel.js";
+import { orderModel } from "../models/orderModel.js";
+
 
 
 // get all variants
@@ -49,6 +52,7 @@ export const adminPriceUpdate = async (req, res) => {
   }
 }
 
+// 
 // upload redeem codes
 export const adminUpload = async (req, res) => {
   const {variant_id, redeemCode} = req.body;
@@ -102,6 +106,7 @@ export const adminUpload = async (req, res) => {
   }
 }
 
+// 
 // remove redeem codes
 export const adminRemove = async (req, res) => {
   const { redeemCode } = req.body;
@@ -158,3 +163,37 @@ export const adminViewCodes = async (req, res) => {
     res.status(400).json({ success: false, message: error.message });
   }
 };
+
+
+export const adminViewUsers = async (req, res) => {
+  try {
+    const users = await usersModel.find().lean();
+    const formattedUsers = await Promise.all(
+      users.map(async (user) => {
+        const orders = await orderModel.find({user_id: user._id});
+        const { totalSpentINR, totalSpentUSDT } = orders.reduce((start, current) => {
+          const totalSpentINR = start.totalSpentINR + current.totalINR;
+          const totalSpentUSDT = start.totalSpentUSDT + current.totalUSDT;
+
+          return {totalSpentINR, totalSpentUSDT}
+        }, { totalSpentINR: 0, totalSpentUSDT: 0 });
+        return { 
+          ...user, 
+          password: undefined, 
+          totalOrders: orders.length, 
+          totalSpentINR: Math.round(totalSpentINR * 100) / 100, 
+          totalSpentUSDT: Math.round(totalSpentUSDT * 100) / 100 
+        }
+      })
+    )
+
+    return res
+      .status(200)
+      .json({
+        success: true,
+        users: formattedUsers
+      });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+}
