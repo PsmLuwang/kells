@@ -1,8 +1,9 @@
 import { create } from "zustand";
 import axios from "axios";
 
-// const API_URL = import.meta.env.MODE === "development" ? "http://localhost:8080/api/auth" : "/api/auth";
-const API_URL = "http://localhost:8080/api/record";
+const API_URL = import.meta.env.VITE_NODE_ENV == "development" 
+? "http://localhost:8080/api" 
+: import.meta.env.VITE_API_URL;
 
 
 axios.defaults.withCredentials = true;
@@ -15,7 +16,7 @@ export const useOrderStore = create((set) => ({
 	// get all orders 
 	viewOrders: async (user_id) => {
 		try {
-			const response = await axios.get(`${API_URL}/order?user_id=${user_id}`);
+			const response = await axios.get(`${API_URL}/record/order?user_id=${user_id}`);
 
 			const data = response.data.orders;
 
@@ -44,7 +45,7 @@ export const useOrderStore = create((set) => ({
 
 	checkout: async (user_id) => {
 		try {
-			await axios.post(`${API_URL}/order?user_id=${user_id}`);
+			await axios.post(`${API_URL}/record/order?user_id=${user_id}`);
 		} catch (error) {
 			
 		}

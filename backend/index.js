@@ -14,10 +14,13 @@ import adminRoutes from "./routes/admin.route.js"
 
 dotenv.config();
 
-// const corsOptions = {origin: "http://localhost:5173"}
+const FRONTEND_URL = process.env.NODE_ENV == "development" 
+? "http://localhost:5173" 
+: process.env.CLIENT_URL
+
 const app = express();
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
-// app.use(cors(corsOptions));
+app.use(cors({ origin: FRONTEND_URL, credentials: true }));
+
 app.use(express.json());
 app.use(cookieParser())
 
@@ -32,7 +35,6 @@ app.use("/api/codeTransaction", cartTransactionRoutes)
 app.use("/api/record", orderRoutes)
 // admin features
 app.use("/api/admin", adminRoutes)
-
 
 
 
@@ -113,5 +115,6 @@ const PORT = process.env.PORT || 5000
 app.listen(PORT, () => {
   connectDB();
   console.log(`server is live : ${PORT}`);
+  console.log(`FRONTEND_URL : ${FRONTEND_URL}`);
   
 })

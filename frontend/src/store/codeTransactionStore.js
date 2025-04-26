@@ -1,8 +1,9 @@
 import { create } from "zustand";
 import axios from "axios";
 
-// const API_URL = import.meta.env.MODE === "development" ? "http://localhost:8080/api/auth" : "/api/auth";
-const API_URL = "http://localhost:8080/api/codeTransaction";
+const API_URL = import.meta.env.VITE_NODE_ENV == "development" 
+? "http://localhost:8080/api" 
+: import.meta.env.VITE_API_URL;
 
 
 axios.defaults.withCredentials = true;
@@ -15,7 +16,7 @@ export const useCodeTransactionStore = create((set) => ({
 	// get all cart items
   fetchCart: async (user_id) => {
 		try {
-			const response = await axios.get(`${API_URL}/cart?user_id=${user_id}`);
+			const response = await axios.get(`${API_URL}/codeTransaction/cart?user_id=${user_id}`);
 			set({ cart: response.data.cart, message: response.data.message});
 		} catch (error) {
 			set({ error: error.response.data.message || "Error fetchCart"});
@@ -26,7 +27,7 @@ export const useCodeTransactionStore = create((set) => ({
 	// add items to cart
 	addToCart: async (user_id, variant_id, qty) => {
 		try {
-			const response = await axios.post(`${API_URL}/cart`, { user_id, variant_id, qty });
+			const response = await axios.post(`${API_URL}/codeTransaction/cart`, { user_id, variant_id, qty });
 			
 			set({ message: response.data.message});
 		} catch (error) {
@@ -38,7 +39,7 @@ export const useCodeTransactionStore = create((set) => ({
 	// remove item from cart
 	removeCart: async (user_id, variant_id) => {
 		try {
-			const response = await axios.delete(`${API_URL}/cart`, {
+			const response = await axios.delete(`${API_URL}/codeTransaction/cart`, {
 				params: { user_id, variant_id },
 			})
 			set({ cart: response.data.cart })

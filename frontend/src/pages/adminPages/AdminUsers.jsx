@@ -8,10 +8,12 @@ const AdminUsers = () => {
 
   const [allUsers, setAllUsers] = useState([]);
   useEffect(() => {
-    const API_URL = "http://localhost:8080/api/admin";
+    const API_URL = import.meta.env.VITE_NODE_ENV == "development" 
+    ? "http://localhost:8080/api" 
+    : import.meta.env.VITE_API_URL;
     const getAllusers = async () => {
       try {
-        const response = await axios.get(`${API_URL}/viewUsers`);
+        const response = await axios.get(`${API_URL}/admin/viewUsers`);
         setAllUsers(response.data.users)
       } catch (error) {
         
