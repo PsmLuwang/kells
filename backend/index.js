@@ -19,7 +19,7 @@ const FRONTEND_URL = process.env.NODE_ENV == "development"
 : process.env.CLIENT_URL
 
 const app = express();
-app.use(cors({ origin: FRONTEND_URL, credentials: true }));
+app.use(cors({ origin: "https://kells-pi.vercel.app", credentials: true }));
 
 app.use(express.json());
 app.use(cookieParser())
