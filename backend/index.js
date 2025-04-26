@@ -39,15 +39,19 @@ app.use("/api/admin", adminRoutes)
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
-app.post("/", async (req, res) => {
-  const {name, region, img, flag} = req.body;
-  try{
-    const newType = new typesModel({name, region, img, flag});
-    await newType.save();
-    res.status(201).json({message: "User created sucessfully"})
-  } catch (error) {
-    res.status(400).json({error: error.message})
-  }
+// app.post("/", async (req, res) => {
+//   const {name, region, img, flag} = req.body;
+//   try{
+//     const newType = new typesModel({name, region, img, flag});
+//     await newType.save();
+//     res.status(201).json({message: "User created sucessfully"})
+//   } catch (error) {
+//     res.status(400).json({error: error.message})
+//   }
+// })
+
+app.get("/", (req, res) => {
+  res.send("Backend is running")
 })
 
 app.post("/variants", async (req,res) => {
