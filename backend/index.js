@@ -116,8 +116,8 @@ app.delete("/cart/:id", (req, res) => {
 
 
 const PORT = process.env.PORT || 5000
+connectDB();
 app.listen(PORT, () => {
-  connectDB();
   console.log(`server is live : ${PORT}`);
   console.log(`FRONTEND_URL : ${FRONTEND_URL}`);
   
