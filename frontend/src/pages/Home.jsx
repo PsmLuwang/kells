@@ -115,9 +115,8 @@ function Home() {
         <p>Itanagar, Arunachal Pradesh, 791112 | India</p>
         <p>Web Developer | Salam Priyansu Meitei</p>
 
-
         <section className="logo">
-          <img src="public/img/logo.png" alt="Logo" />
+          <img src="/img/logo.png" alt="Logo" />
           <div>
             <p>Slim Kells</p>
             <p>Redeem Codes</p>
