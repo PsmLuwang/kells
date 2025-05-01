@@ -117,7 +117,7 @@ function Home() {
 
 
         <section className="logo">
-          <img src="/img/logo.png" alt="Logo" />
+          <img src="public/img/logo.png" alt="Logo" />
           <div>
             <p>Slim Kells</p>
             <p>Redeem Codes</p>
